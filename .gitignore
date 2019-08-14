@@ -13,3 +13,6 @@
 
 # .tfvars files
 **/*.tfvars
+
+# TODO: remove below after repo is complete
+**/terraform/variables.tf

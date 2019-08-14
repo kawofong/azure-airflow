@@ -2,6 +2,8 @@
 
 This repo contains instructions, samples,and best practices for using Apache Airflow on Azure
 
+## Pre-requisite
+
 ## Getting Started
 
 - Using Azure CLI:
