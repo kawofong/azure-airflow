@@ -4,6 +4,11 @@ This repo contains instructions, samples,and best practices for using Apache Air
 
 ## Pre-requisite
 
+- Python 2 or 3
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/?view=azure-cli-latest)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [psql](https://www.postgresql.org/docs/10/app-psql.html)
+
 ## Getting Started
 
 - Using Azure CLI:
@@ -14,6 +19,23 @@ This repo contains instructions, samples,and best practices for using Apache Air
   - Replace the default for `aks_sp_client_id` and `aks_sp_client_secret` with the generated service principal `appId` and `password` respectively
   - Run `terraform plan -out=out.tfplan`
   - Run `terraform apply out.tfplan`. This process may take up to 5 hours (Azure Redis takes a long time to provision)
+
+- Through Portal:
+  - Allow connection from your client to APG
+    - Navigate to "azure-airflow-pgsrv" -> Select "Connection Security" -> Click "Add Client IP" -> Click "Save"
+
+- In `./`:
+  - Create `airflow` database user and grant it access to `airflow` database
+    - Run `psql -h <pg-server-name>.postgres.database.azure.com -U <pg-username>@<pg-server-name> -d airflow -c "create user airflow with encrypted password 'foo'; grant all privileges on database airflow to airflow;"`
+
+- In `./helm`:
+  - Generate fernet key for Airflow (instructions [here](https://bcb.github.io/airflow/fernet-key))
+  - In `airflow.yaml`, place the generated fernet key as the value of `fernetKey`
+  - In `airflow.yaml`, place `postgresql+psycopg2://airflow@<pg-server-name>:foo@<pg-server-name>.postgres.database.azure.com:5432/airflow?sslmode=require` as the value of `sqlalchemy_connection`
+
+- Configure `kubectl` to use AKS cluster context:
+  - Run `az aks get-credentials --name <airflow-aks-resource-name> --resource-group <airflow-resource-group-name>`
+    - After context has been merged locally, run `kubectl config use-context <airflow-aks-resource-name>` subsequently
 
 ## References
 
