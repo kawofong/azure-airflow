@@ -20,6 +20,12 @@ This repo contains instructions, samples,and best practices for using Apache Air
   - Run `terraform plan -out=out.tfplan`
   - Run `terraform apply out.tfplan`. This process may take up to 5 hours (Azure Redis takes a long time to provision)
 
+- In `./docker`:
+  - Run `docker build --rm -t <azure-container-reg-login-server>/docker-airflow .` to build airflow docker image
+  - Run `az acr login --name <azure-container-reg-name>` to login to container registry
+    - For more authentication methods, please see [this](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-authentication)
+  - Run `docker push <azure-container-reg-login-server>/docker-airflow` to push airflow docker images to ACR
+
 - Through Portal:
   - Allow connection from your client to APG
     - Navigate to "azure-airflow-pgsrv" -> Select "Connection Security" -> Click "Add Client IP" -> Click "Save"
