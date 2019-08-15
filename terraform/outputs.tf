@@ -16,6 +16,10 @@ output "db_airflow_name" {
   value = "${azurerm_postgresql_database.airflow-pgdb.name}"
 }
 
+output "acr_hostname" {
+  value = "${azurerm_container_registry.airflow-acr.login_server}"
+}
+
 output "aks_client_certificate" {
   value = "${azurerm_kubernetes_cluster.airflow-aks.kube_config.0.client_certificate}"
 }

@@ -39,6 +39,14 @@ resource "azurerm_postgresql_database" "airflow-pgdb" {
   collation           = "English_United States.1252"
 }
 
+resource "azurerm_container_registry" "airflow-acr" {
+  name                     = "azureAirflowAcr" # TODO: parameterize the name
+  resource_group_name      = "${azurerm_resource_group.airflow-rg.name}"
+  location                 = "${azurerm_resource_group.airflow-rg.location}"
+  sku                      = "Basic"
+  admin_enabled            = false
+}
+
 resource "azurerm_kubernetes_cluster" "airflow-aks" {
   name                = "${var.prefix}-aks"
   location            = "${azurerm_resource_group.airflow-rg.location}"
